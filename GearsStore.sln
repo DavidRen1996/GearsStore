@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GearsStore", "GearsStore.csproj", "{2346B032-9A02-45D3-AEA6-2774C5E95F9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GearsStore.Tests", "..\GearsStore.Tests\GearsStore.Tests.csproj", "{18593FEE-05DA-4414-B781-C32DDB4D6C12}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2346B032-9A02-45D3-AEA6-2774C5E95F9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2346B032-9A02-45D3-AEA6-2774C5E95F9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2346B032-9A02-45D3-AEA6-2774C5E95F9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2346B032-9A02-45D3-AEA6-2774C5E95F9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18593FEE-05DA-4414-B781-C32DDB4D6C12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18593FEE-05DA-4414-B781-C32DDB4D6C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18593FEE-05DA-4414-B781-C32DDB4D6C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18593FEE-05DA-4414-B781-C32DDB4D6C12}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {878C6B67-13B8-4B1C-A1DC-2ADA3559E762}
+	EndGlobalSection
+EndGlobal
