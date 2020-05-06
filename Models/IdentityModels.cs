@@ -20,6 +20,10 @@ namespace GearsStore.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Customer> Customers { get; set; }
+        //to enable migrations, there must be an existing DbContext in the project model folder
+        public DbSet<Game> Games { get; set; }
+        public DbSet<Manager> Managers { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

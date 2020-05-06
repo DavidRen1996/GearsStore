@@ -13,16 +13,16 @@ namespace GearsStore.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult MyRecommendations()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "My Daily Recommendations.";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult profile()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "My Profile.";
 
             return View();
         }
