@@ -29,8 +29,8 @@ namespace GearsStore.Controllers.API
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USEast1;
         private static readonly string accesskey = ConfigurationManager.AppSettings["AWSAccessKey"];
         private static readonly string secretkey = ConfigurationManager.AppSettings["AWSSecretKey"];
+        private static IAmazonS3 s3Client = new AmazonS3Client(ConfigurationManager.AppSettings["AWSAccessKey"], ConfigurationManager.AppSettings["AWSSecretKey"], RegionEndpoint.USEast1);
 
-        
 
         // GET: api/Games
         public IQueryable<Game> GetGames()
@@ -98,8 +98,16 @@ namespace GearsStore.Controllers.API
             AWSUploader myUploader = new AWSUploader();
             FileStream fs = File.OpenRead(filePath);
             
-            bool a = myUploader.sendMyFileToS3(fs, "gearstore", "titan.jpg");
-            
+            bool a = myUploader.sendMyFileToS3(fs, "gearstore", "titan1.jpg");
+            GetPreSignedUrlRequest request1 = new GetPreSignedUrlRequest
+            {
+                BucketName = bucketName,
+                Key = "titan1.jpg",
+                Expires = DateTime.Now.AddYears(10)
+            };
+            String urlString = s3Client.GetPreSignedURL(request1);
+            game.GameSnapshotLink = urlString;
+            db.Games.Add(game);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = game.Id }, game);

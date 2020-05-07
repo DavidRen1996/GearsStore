@@ -207,6 +207,10 @@
     <Compile Include="Migrations\202005041847462_SiteInit1.Designer.cs">
       <DependentUpon>202005041847462_SiteInit1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005062003017_AddGameSnapshotLink.cs" />
+    <Compile Include="Migrations\202005062003017_AddGameSnapshotLink.Designer.cs">
+      <DependentUpon>202005062003017_AddGameSnapshotLink.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AWSUploader.cs" />
@@ -218,6 +222,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CustomerViewModel.cs" />
+    <Compile Include="ViewModels\GameViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -305,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005041847462_SiteInit1.resx">
       <DependentUpon>202005041847462_SiteInit1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005062003017_AddGameSnapshotLink.resx">
+      <DependentUpon>202005062003017_AddGameSnapshotLink.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
