@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GearsStore.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace GearsStore.Controllers
 {
@@ -76,8 +77,38 @@ namespace GearsStore.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            /*
+            System.Diagnostics.Debug.WriteLine(model.Email);
+            System.Diagnostics.Debug.WriteLine(model.Password);
+            var emailCheck = UserManager.FindByEmail(model.Email);
+            var passwordCheck = SignInManager.UserManager.CheckPassword(emailCheck, model.Password);
+            System.Diagnostics.Debug.WriteLine(emailCheck);
+            System.Diagnostics.Debug.WriteLine(passwordCheck);
+            var result = SignInManager.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            System.Diagnostics.Debug.WriteLine(result);*/
+
+            //if username is not the same as email use below code
+            ApplicationUser targetUser = UserManager.FindByEmail(model.Email);
+            if (targetUser.UserName != model.Email)
+            {
+                var result = await SignInManager.PasswordSignInAsync(targetUser.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToLocal(returnUrl);
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    case SignInStatus.Failure:
+
+                    default:
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
+                }
+            }
+            var resultSame = SignInManager.PasswordSignIn(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            switch (resultSame)
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
@@ -86,6 +117,7 @@ namespace GearsStore.Controllers
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
+
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
@@ -162,7 +194,15 @@ namespace GearsStore.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    //temp code 
+                    //create game manager role, game customer role need to created without this temp code
+                    var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+                    await roleManager.CreateAsync(new IdentityRole("CanManageGames"));
+                    await UserManager.AddToRoleAsync(user.Id, "CanManageGames");
+                    
+
+                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);// auto signin new user can be replaced by sending a email first
                     using (var client = new HttpClient())
                     {
                         client.BaseAddress = new Uri("https://localhost:44345/api/Customers");

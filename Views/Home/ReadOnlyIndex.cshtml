@@ -1,24 +1,23 @@
 ﻿@model GearsStore.ViewModels.GameViewModel
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "ReadOnlyIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
 
 <!DOCTYPE html>
 <html>
 
 <body>
     @{
-        @Html.RouteLink("New Game", new { @controller = "Manage", @action = "AddGameView" }, new {type = "button", @class = "btn btn-primary" })
-        <!-- "Displayed text", "Controller Name", "Function Name" -->
-        <!-- RouteLink avoid adding Default Home in url since it is under Home folder -->
+
+
         if (Model == null)
         {
             <p>No Game in Store is Found!</p>
         }
         else
         {
+            <p>Read Only Page</p>
             <table id="Games" class="table table-bordered table-hover">
 
                 <tbody>
@@ -38,6 +37,7 @@
 
 
     }
+    <!--<img src="https://gearstore.s3.amazonaws.com/titan1.jpg?AWSAccessKeyId=AKIA57VLM4AQJONYMB7F&amp;Expires=1904336816&amp;Signature=5AsQrgYbDlxpE%2FvpTRVx6llFAgg%3D" /> -->
 
 </body>
 
@@ -51,6 +51,8 @@
         }
 
     </script>
-    
-    
+
+
 }
+
+

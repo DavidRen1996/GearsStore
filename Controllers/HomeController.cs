@@ -44,7 +44,11 @@ namespace GearsStore.Controllers
 
                     //string name = (string)obj["GameName"];
                     System.Diagnostics.Debug.WriteLine(temp);
-                    return View(gameViewModel);
+                    if (User.IsInRole("CanManageGames"))
+                    {
+                        return View(gameViewModel);
+                    }
+                    return View("ReadOnlyIndex",gameViewModel);
                     //var existingGames = await getResult.Content.ReadAsAsync<IQueryable<Game>>();
                     //System.Diagnostics.Debug.WriteLine(existingGames.GetType());
                 }
