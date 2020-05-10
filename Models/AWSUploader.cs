@@ -14,7 +14,7 @@ namespace GearsStore.Models
           
   
 
-            public bool sendMyFileToS3(FileStream localFilePath, string bucketName, string fileNameInS3)
+            public bool sendMyFileToS3(Stream localFilePath, string bucketName, string fileNameInS3)
             {
                 IAmazonS3 client = new AmazonS3Client(ConfigurationManager.AppSettings["AWSAccessKey"], ConfigurationManager.AppSettings["AWSSecretKey"],RegionEndpoint.USEast1);
                 TransferUtility utility = new TransferUtility(client); 

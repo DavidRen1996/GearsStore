@@ -17,6 +17,8 @@ using Amazon.S3.Transfer;
 using System.IO;
 using System.Threading.Tasks;
 using GearsStore.Models;
+using System.Web;
+using GearsStore.ViewModels;
 
 namespace GearsStore.Controllers.API
 {
@@ -24,14 +26,14 @@ namespace GearsStore.Controllers.API
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private const string bucketName = "gearstore";
-        private const string keyName = "titan.jpg";
-        private const string filePath = "C:\\Users\\dell\\Desktop\\community_image_1415020180.jpg";
+        //private const string keyName = "titan.jpg";
+        //private const string filePath = "C:\\Users\\dell\\Desktop\\community_image_1415020180.jpg";
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USEast1;
         private static readonly string accesskey = ConfigurationManager.AppSettings["AWSAccessKey"];
         private static readonly string secretkey = ConfigurationManager.AppSettings["AWSSecretKey"];
         private static IAmazonS3 s3Client = new AmazonS3Client(ConfigurationManager.AppSettings["AWSAccessKey"], ConfigurationManager.AppSettings["AWSSecretKey"], RegionEndpoint.USEast1);
-
-
+        
+        
         // GET: api/Games
         public IQueryable<Game> GetGames()
         {
@@ -88,25 +90,16 @@ namespace GearsStore.Controllers.API
 
         // POST: api/Games
         [ResponseType(typeof(Game))]
+        [HttpPost]
         public IHttpActionResult PostGame(Game game)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            AWSUploader myUploader = new AWSUploader();
-            FileStream fs = File.OpenRead(filePath);
+            //db.Games.Add(gameViewModel.game);
+            //db.SaveChanges();
             
-            bool a = myUploader.sendMyFileToS3(fs, "gearstore", "titan1.jpg");
-            GetPreSignedUrlRequest request1 = new GetPreSignedUrlRequest
-            {
-                BucketName = bucketName,
-                Key = "titan1.jpg",
-                Expires = DateTime.Now.AddYears(10)
-            };
-            String urlString = s3Client.GetPreSignedURL(request1);
-            game.GameSnapshotLink = urlString;
             db.Games.Add(game);
             db.SaveChanges();
 

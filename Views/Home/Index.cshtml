@@ -1,12 +1,56 @@
-﻿@{
+﻿@model GearsStore.ViewModels.GameViewModel
+@{
     ViewBag.Title = "Home Page";
 }
 
 
+
 <!DOCTYPE html>
 <html>
+
 <body>
-    <img src="https://gearstore.s3.amazonaws.com/titan1.jpg?AWSAccessKeyId=AKIA57VLM4AQJONYMB7F&amp;Expires=1904336816&amp;Signature=5AsQrgYbDlxpE%2FvpTRVx6llFAgg%3D" />
+    @{
+
+
+        if (Model == null)
+        {
+            <p>No Game in Store is Found!</p>
+        }
+        else
+        {
+            <table id="Games" class="table table-bordered table-hover">
+
+                <tbody>
+
+                    @foreach (var game in Model.GameList)
+                    {
+                        <tr>
+
+                            <td><img src=@game.GameSnapshotLink alt="Image" height="168" width="208" /></td>
+                            <td>@game.GameName</td>
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+
+    }
+    <!--<img src="https://gearstore.s3.amazonaws.com/titan1.jpg?AWSAccessKeyId=AKIA57VLM4AQJONYMB7F&amp;Expires=1904336816&amp;Signature=5AsQrgYbDlxpE%2FvpTRVx6llFAgg%3D" /> -->
+
 </body>
 
 </html>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#Games").DataTable();
+        }
+
+    </script>
+    
+    
+}

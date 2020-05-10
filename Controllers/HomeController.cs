@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Net.Http;
 using GearsStore.Models;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using GearsStore.ViewModels;
 using System.Data.Entity;
 using System.Runtime.InteropServices;
@@ -31,7 +33,18 @@ namespace GearsStore.Controllers
                 if (getResult.IsSuccessStatusCode)
                 {
                     var temp = await getResult.Content.ReadAsStringAsync();
+                    //JObject obj = JObject.Parse(temp);
+                    var gameList = JsonConvert.DeserializeObject<List<Game>>(temp);
+                    //List<Game> gameList = result;
+
+                    var gameViewModel = new GameViewModel
+                    {
+                        GameList = gameList
+                    };
+
+                    //string name = (string)obj["GameName"];
                     System.Diagnostics.Debug.WriteLine(temp);
+                    return View(gameViewModel);
                     //var existingGames = await getResult.Content.ReadAsAsync<IQueryable<Game>>();
                     //System.Diagnostics.Debug.WriteLine(existingGames.GetType());
                 }

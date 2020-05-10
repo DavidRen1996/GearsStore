@@ -6,7 +6,16 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Net.Http;
 using GearsStore.Models;
+using GearsStore.ViewModels;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+
 
 namespace GearsStore.Controllers
 {
@@ -15,6 +24,14 @@ namespace GearsStore.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
+        private const string bucketName = "gearstore";
+        //private const string keyName = "titan.jpg";
+        //private const string filePath = "C:\\Users\\dell\\Desktop\\community_image_1415020180.jpg";
+        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USEast1;
+        private static readonly string accesskey = ConfigurationManager.AppSettings["AWSAccessKey"];
+        private static readonly string secretkey = ConfigurationManager.AppSettings["AWSSecretKey"];
+        private static IAmazonS3 s3Client = new AmazonS3Client(ConfigurationManager.AppSettings["AWSAccessKey"], ConfigurationManager.AppSettings["AWSSecretKey"], RegionEndpoint.USEast1);
 
         public ManageController()
         {
@@ -251,10 +268,12 @@ namespace GearsStore.Controllers
             return View();
         }
 
+        
+
         //
         // POST: /Manage/SetPassword
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]//prevent cross site attack, require login first
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -274,6 +293,65 @@ namespace GearsStore.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+
+
+        public ActionResult AddGameView()
+        {
+            return View();
+        }
+        //
+        // POST: /Manage/AddGameView
+        [HttpPost]
+        
+        public async Task<ActionResult> AddGameView(GameViewModel gameViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                /*var f = Request.Files;
+                System.Diagnostics.Debug.WriteLine(f.Count);
+                if (f == null)
+                {
+                    System.Diagnostics.Debug.WriteLine(gameViewModel.game.GameName);
+                    System.Diagnostics.Debug.WriteLine("input file is null");
+                }*/
+                if (gameViewModel.InputFile.ContentLength > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("input file is in viewmodel");
+                    AWSUploader myUploader = new AWSUploader();
+                    //if (Request.Files.Count > 0)
+
+                    Stream fs = gameViewModel.InputFile.InputStream;
+                    String s3Name = DateTime.Now.ToString() + gameViewModel.game.GameName;
+                    System.Diagnostics.Debug.WriteLine(s3Name);
+                    bool a = myUploader.sendMyFileToS3(fs, "gearstore", s3Name);
+                    GetPreSignedUrlRequest request1 = new GetPreSignedUrlRequest
+                    {
+                        BucketName = bucketName,
+                        Key = "titan1.jpg",
+                        Expires = DateTime.Now.AddYears(10)
+                    };
+                    String urlString = s3Client.GetPreSignedURL(request1);
+                    gameViewModel.game.GameSnapshotLink = urlString;
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("https://localhost:44345/api/Games");
+                        var postTask = client.PostAsJsonAsync<Game>("Games", gameViewModel.game);
+                       
+                        postTask.Wait();
+
+                        var postresult = postTask.Result;
+                        System.Diagnostics.Debug.WriteLine(postresult);
+                        if (postresult.IsSuccessStatusCode)
+                        {
+                            
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
+                }
+            }
+            return View();
         }
 
         //

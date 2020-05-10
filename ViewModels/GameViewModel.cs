@@ -9,6 +9,7 @@ namespace GearsStore.ViewModels
     public class GameViewModel
     {
         public List<Game> GameList { get; set; }
-
+        public Game game { get; set; }
+        public HttpPostedFileBase InputFile { get; set; }
     }
 }

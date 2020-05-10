@@ -1,0 +1,60 @@
+﻿@model GearsStore.ViewModels.GameViewModel
+@{
+    ViewBag.Title = "AddGameView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Game</h2>
+
+@using (Html.BeginForm("AddGameView", "Manage",FormMethod.Post,new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", data_ajax = "false" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.game.GameName)
+        @Html.TextBoxFor(m => m.game.GameName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.game.GameName)
+        <!-- validation placeholder needed for each textbox that require a validation, error message will only displayed for required items in database!!!!! -->
+        <!--specify the class of the form bootstrap-->
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.game.GameDescription)
+        @Html.TextBoxFor(m => m.game.GameDescription, new { @class = "form-control" })
+        <!--specify the class of the form bootstrap-->
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.game.GamePrice)
+        @Html.TextBoxFor(m => m.game.GamePrice, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.game.GamePrice)
+        <!--specify the class of the form bootstrap-->
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.game.GameReleasedDate)
+        @Html.TextBoxFor(m => m.game.GameReleasedDate, new { @class = "form-control" })
+        <!--specify the class of the form bootstrap-->
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.game.GameDescription)
+        @Html.TextBoxFor(m => m.game.GameDescription, new { @class = "form-control" })
+        <!--specify the class of the form bootstrap-->
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.game.GameVideoLink)
+        @Html.TextBoxFor(m => m.game.GameVideoLink, new { @class = "form-control" })
+        <!-- this dropdown list is also implicitly required although not defined in class, because looking into the html on broswer we found all list has a value except the first cannot map null to an int object -->
+        <!-- first item is for input storage, selectlist for dropdown list -->
+        <!--Store Duration to Customers.MemberDuration, with each list showing the content of MemberDescription column-->
+        <!--specify the class of the form bootstrap-->
+    </div>
+    <div class="form-group">
+        @Html.Label("InputFile")
+        @Html.TextBoxFor(m => m.InputFile, new {type = "file", accept = "image/*", enctype = "multipart/form-data", data_ajax = "false" })
+        
+
+    </div>
+
+
+    <!-- hidden value that will be passed along with the class, otherwise in controller there will be no Id-->
+    <button type="submit" class="btn btn-primary">
+        Save
+    </button>
+}
+
