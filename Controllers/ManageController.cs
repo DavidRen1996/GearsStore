@@ -323,13 +323,13 @@ namespace GearsStore.Controllers
                     //if (Request.Files.Count > 0)
 
                     Stream fs = gameViewModel.InputFile.InputStream;
-                    String s3Name = DateTime.Now.ToString() + gameViewModel.game.GameName;
+                    String s3Name = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString()+ DateTime.Now.Second.ToString() + gameViewModel.game.GameName;
                     System.Diagnostics.Debug.WriteLine(s3Name);
                     bool a = myUploader.sendMyFileToS3(fs, "gearstore", s3Name);
                     GetPreSignedUrlRequest request1 = new GetPreSignedUrlRequest
                     {
                         BucketName = bucketName,
-                        Key = "titan1.jpg",
+                        Key = s3Name,
                         Expires = DateTime.Now.AddYears(10)
                     };
                     String urlString = s3Client.GetPreSignedURL(request1);

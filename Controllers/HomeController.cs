@@ -58,13 +58,14 @@ namespace GearsStore.Controllers
             return View();
         }
 
+        [Authorize]// to view the recommend page requires a login first
         public ActionResult MyRecommendations()
         {
             ViewBag.Message = "My Daily Recommendations.";
 
             return View();
         }
-
+        [Authorize]// to view the profile page requires a login first
         public ActionResult profile()
         {
             ViewBag.Message = "My Profile.";
