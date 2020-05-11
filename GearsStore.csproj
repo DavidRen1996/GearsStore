@@ -474,6 +474,7 @@
     <Content Include="Views\tests\HomeTestView.cshtml" />
     <Content Include="Views\Manage\AddGameView.cshtml" />
     <Content Include="Views\Home\ReadOnlyIndex.cshtml" />
+    <Content Include="Views\Manage\GameDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

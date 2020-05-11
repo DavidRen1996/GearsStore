@@ -24,12 +24,12 @@
 
                     @foreach (var game in Model.GameList)
                     {
-                        <tr>
+                    <tr>
+                        <td><a href="@Url.RouteUrl("ShowGameDetail", new { action = "GameDetail", controller = "Manage", id = game.Id})"> <img src=@game.GameSnapshotLink alt="Image" height="168" width="208" /></a></td>
+                        <!--  create a new route in RouteConfig.cs named ShowGameDetail -->
+                        <td>@game.GameName</td>
 
-                            <td><img src=@game.GameSnapshotLink alt="Image" height="168" width="208" /></td>
-                            <td>@game.GameName</td>
-
-                        </tr>
+                    </tr>
                     }
                 </tbody>
             </table>

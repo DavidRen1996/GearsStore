@@ -295,6 +295,18 @@ namespace GearsStore.Controllers
             return View(model);
         }
 
+        public ActionResult GameDetail(int id)
+        {
+            //notice here input name has to be id
+            //compared with passing the Game Model, passing only the game id is far better
+            if (id == null)
+            {
+                System.Diagnostics.Debug.WriteLine("Input Invalid");
+            }
+            System.Diagnostics.Debug.WriteLine("Input Valid");
+            Game game = db.Games.SingleOrDefault(c => c.Id == id);// query database based on id
+            return View(game);
+        }
 
 
         public ActionResult AddGameView()
