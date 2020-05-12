@@ -8,9 +8,41 @@
 <!DOCTYPE html>
 <html>
 
+
+
 <body>
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <div class="numbertext">1 / 3</div>
+            <img src="https://gearstore.s3.amazonaws.com/2020512163141Garden%20of%20Words?AWSAccessKeyId=AKIA57VLM4AQJONYMB7F&Expires=1904848303&Signature=D8oIiNA%2FAyUBJJXpObpMVTq7wpU%3D" style="width:100%">
+            <div class="text">Caption Text</div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">2 / 3</div>
+            <img src="https://gearstore.s3.amazonaws.com/titan1.jpg?AWSAccessKeyId=AKIA57VLM4AQJONYMB7F&Expires=1904336816&Signature=5AsQrgYbDlxpE%2FvpTRVx6llFAgg%3D" style="width:100%">
+            <div class="text">Caption Two</div>
+        </div>
+
+        <div class="mySlides fade">
+            <div class="numbertext">3 / 3</div>
+            <img src="https://gearstore.s3.amazonaws.com/2020510173323Re2?AWSAccessKeyId=AKIA57VLM4AQJONYMB7F&Expires=1904679205&Signature=NajHY8zGBcY6MSbjpatFJlUopF8%3D" style="width:100%">
+            <div class="text">Caption Three</div>
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+        <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    </div>
+    <br>
+    <div style="text-align:center">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+        <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
     @{
-        @Html.RouteLink("New Game", new { @controller = "Manage", @action = "AddGameView" }, new {type = "button", @class = "btn btn-primary" })
+        @Html.RouteLink("New Game", new { @controller = "Manage", @action = "AddGameView" }, new { type = "button", @class = "btn btn-primary" })
         <!-- "Displayed text", "Controller Name", "Function Name" -->
         <!-- RouteLink avoid adding Default Home in url since it is under Home folder -->
         if (Model == null)
@@ -20,18 +52,32 @@
         else
         {
             <table id="Games" class="table table-bordered table-hover">
-
+                <thead>
+                    <tr>
+                        <td>Poster</td>
+                        <td>Name</td>
+                        <td>Delete</td>
+                    </tr>
+                </thead>
                 <tbody>
 
                     @foreach (var game in Model.GameList)
                     {
-                    <tr>
+                        <tr>
 
-                        <td><a href="@Url.RouteUrl("ShowGameDetail", new { action = "GameDetail", controller = "Manage", id = game.Id})"> <img src=@game.GameSnapshotLink alt="Image" height="168" width="208" /></a></td>
-                        <!-- create a new route in RouteConfig.cs named ShowGameDetail  -->
-                        <td>@game.GameName</td>
+                            <td>
+                                <a href="@Url.RouteUrl("ShowGameDetail", new { action = "GameDetail", controller = "Manage", id = game.Id})">
+                                    <img src=@game.GameSnapshotLink style="display:block;" width="100%" height="100%" />
+                                    <br />@game.GameName
+                                </a>
+                            </td>
+                            <!-- create a new route in RouteConfig.cs named ShowGameDetail  -->
 
-                    </tr>
+                            <td>
+                                <button data-game-id="@game.Id" class="btn-link js-delete">Delete</button>
+                                <!-- btn-link-make button looks like a link, js-delete-mark this button for javascript delete not for presentation, data-game-id-for data representation -->
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -48,10 +94,50 @@
 {
     <script>
         $(document).ready(function () {
-            $("#Games").DataTable();
-        }
+
+            $("#Games .js-delete").on('click', function () {
+                if (confirm("Delete Confirm")) {
+                    $.ajax({
+                        url: "/api/Games/" + $(this).attr("data-game-id"),
+                        method: "DELETE",
+                        success: function () {
+                            console.log("Success Delete");
+                        }
+                    })
+                }
+
+            });
+        })
 
     </script>
-    
-    
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
+    </script>
+
+
 }

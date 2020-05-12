@@ -110,6 +110,7 @@ namespace GearsStore.Controllers.API
         [ResponseType(typeof(Game))]
         public IHttpActionResult DeleteGame(int id)
         {
+            System.Diagnostics.Debug.WriteLine("enter delete api");
             Game game = db.Games.Find(id);
             if (game == null)
             {
