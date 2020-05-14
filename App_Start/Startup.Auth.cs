@@ -54,9 +54,9 @@ namespace GearsStore
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "3191103077587390",
+               appSecret: "1de3ababa7a37ab7bc1c9f608d4bc62f");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

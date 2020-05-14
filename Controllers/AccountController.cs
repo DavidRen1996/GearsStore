@@ -343,6 +343,8 @@ namespace GearsStore.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
+            System.Diagnostics.Debug.WriteLine("Login Url:"+returnUrl);
+            
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
@@ -391,7 +393,7 @@ namespace GearsStore.Controllers
             {
                 return RedirectToAction("Login");
             }
-
+            System.Diagnostics.Debug.WriteLine("Call Back Url:"+loginInfo.Email+loginInfo.DefaultUserName);
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
