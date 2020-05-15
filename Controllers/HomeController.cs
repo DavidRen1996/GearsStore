@@ -22,7 +22,7 @@ namespace GearsStore.Controllers
             
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://localhost:44345/api/");
+                client.BaseAddress = new Uri("https://gearstorefixurl.azurewebsites.net/api/");
 
                 //HTTP GET
                 var getTask = client.GetAsync("Games");
