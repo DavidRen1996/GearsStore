@@ -205,7 +205,7 @@ namespace GearsStore.Controllers
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);// auto signin new user can be replaced by sending a email first
                     using (var client = new HttpClient())
                     {
-                        client.BaseAddress = new Uri("https://localhost:44345/api/Customers");
+                        client.BaseAddress = new Uri("https://gearstorefixurl.azurewebsites.net/api/Customers");
 
                         //HTTP POST
                         var postTask = client.PostAsJsonAsync<Customer>("Customers", customer);
