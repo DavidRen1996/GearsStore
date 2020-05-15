@@ -348,7 +348,7 @@ namespace GearsStore.Controllers
                     gameViewModel.game.GameSnapshotLink = urlString;
                     using (var client = new HttpClient())
                     {
-                        client.BaseAddress = new Uri("https://localhost:44345/api/Games");
+                        client.BaseAddress = new Uri("https://gearstorefixurl.azurewebsites.net/api/Games");
                         var postTask = client.PostAsJsonAsync<Game>("Games", gameViewModel.game);
                        
                         postTask.Wait();
